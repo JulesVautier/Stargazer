@@ -6,9 +6,17 @@ authors = ["Jules Vautier <julesvautier@epitech.eu>"]
 
 [tool.poetry.dependencies]
 python = "^3.8"
+requests = "^2.27.1"
+fastapi = "^0.75.0"
+gunicorn = "^20.1.0"
+python-multipart = "^0.0.5"
+uvicorn = "^0.17.6"
 
 [tool.poetry.dev-dependencies]
 pytest = "^5.2"
+black = "^22.1.0"
+isort = "^5.10.1"
+pylint = "^2.13.0"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
