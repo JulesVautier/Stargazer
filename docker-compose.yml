@@ -3,10 +3,37 @@
 version: '3.8'
 
 services:
-  web:
+  api:
+    container_name: api
     build: .
     volumes:
-      - .:/stargazer
+      - ./stargazer:/app/stargazer
+      - ./asgi.py:/app/asgi.py
     ports:
       - 80:80
+    environment:
+      - POSTGRES_USER=stargazer
+      - POSTGRES_PASSWORD=stargazer
+      - POSTGRES_DB=stargazer
+      - POSTGRES_PORT=5432
+      - POSTGRES_HOST=db
+      - ACCESS_TOKEN=${ACCESS_TOKEN}
+    depends_on:
+      - db
+    # got this error: could not find an available, non-overlapping IPv4 address pool among the defaults to assign to the network
+    # the solution was to add "network_mode: bridge"
+    # https://stackoverflow.com/questions/43720339/docker-error-could-not-find-an-available-non-overlapping-ipv4-address-pool-am
+    network_mode: bridge
+    links:
+      - db:db
+
+  db:
+    container_name: db
+    image: postgres:13-alpine
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRES_USER=stargazer
+      - POSTGRES_PASSWORD=stargazer
+      - POSTGRES_DB=stargazer
     network_mode: bridge
