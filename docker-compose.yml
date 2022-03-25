@@ -1,0 +1,12 @@
+# docker-compose.yml
+
+version: '3.8'
+
+services:
+  web:
+    build: .
+    volumes:
+      - .:/stargazer
+    ports:
+      - 80:80
+    network_mode: bridge
