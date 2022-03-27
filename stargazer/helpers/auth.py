@@ -1,25 +1,8 @@
-from fastapi import HTTPException, Depends
+from fastapi import Depends, HTTPException
 from fastapi.security import OAuth2PasswordBearer
 from starlette import status
 
 from stargazer.models.user import User
-
-fake_users_db = {
-    "johndoe": {
-        "username": "johndoe",
-        "full_name": "John Doe",
-        "email": "johndoe@example.com",
-        "hashed_password": "fakehashedsecret",
-        "disabled": False,
-    },
-    "alice": {
-        "username": "alice",
-        "full_name": "Alice Wonderson",
-        "email": "alice@example.com",
-        "hashed_password": "fakehashedsecret2",
-        "disabled": True,
-    },
-}
 
 
 def fake_hash_password(password: str):
@@ -42,7 +25,7 @@ def get_user(db, username: str):
 def fake_decode_token(token):
     # This doesn't provide any security at all
     # Check the next version
-    user = get_user(fake_users_db, token)
+    user = get_user(None, token)
     return user
 
 

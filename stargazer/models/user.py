@@ -10,22 +10,21 @@ pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 class User(Base):
     __tablename__ = "users"
     id = Column(Integer, primary_key=True)
-    name = Column(String(120), unique=True)
+    email = Column(String(120), unique=True)
     _password = Column(String(120))
 
     def __init__(self, email=None):
-        self.name = email
+        self.email = email
 
     def __repr__(self):
-        return "<User %r>" % (self.name)
+        return "<User %r>" % (self.email)
 
     @hybrid_property
     def password(self):
         return self._password
 
-    @password.setter
-    def _set_password(self, plaintext):
+    def set_password(self, plaintext):
         self._password = pwd_context.hash(plaintext)
 
-    def verify_password(self, plaintext, hashed_password):
-        return pwd_context.verify(plaintext, hashed_password)
+    def verify_password(self, plaintext):
+        return pwd_context.verify(plaintext, self._password)

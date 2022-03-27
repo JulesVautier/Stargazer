@@ -5,13 +5,15 @@ from fastapi.security import OAuth2PasswordRequestForm
 
 from stargazer import models
 from stargazer.db.database import engine
-from stargazer.helpers.auth import fake_users_db, UserInDB, fake_hash_password, get_current_active_user
+from stargazer.helpers.auth import UserInDB, fake_hash_password, get_current_active_user
 from stargazer.helpers.github import GithubAPI
 from stargazer.models.user import User
 
 models.Base.metadata.create_all(bind=engine)
 
 router = APIRouter()
+
+fake_users_db = None
 
 
 @router.post("/token")
@@ -28,13 +30,15 @@ async def login(form_data: OAuth2PasswordRequestForm = Depends()):
 
 
 @router.get("/users/me")
-async def read_users_me(current_user: User = Depends(get_current_active_user)):
+async def get_users_me(current_user: User = Depends(get_current_active_user)):
     return current_user
 
 
 @router.get("/repos/{user}/{repo}/starneighbours")
 async def get_starneighbours(
-    user: str, repo: str, current_user: User = Depends(get_current_active_user)
+    # user: str, repo: str, current_user: User = Depends(get_current_active_user)
+    user: str,
+    repo: str,
 ):
     access_token = os.getenv("ACCESS_TOKEN")
     response = GithubAPI(access_token).get_neighbour_repositories(user, repo)

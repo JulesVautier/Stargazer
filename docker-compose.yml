@@ -8,7 +8,6 @@ services:
     build: .
     volumes:
       - ./stargazer:/app/stargazer
-      - ./asgi.py:/app/asgi.py
     ports:
       - 80:80
     environment:
