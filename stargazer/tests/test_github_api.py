@@ -1,32 +1,6 @@
-from pprint import pprint
 from typing import Generator
 
-from requests import Response
-from sqlalchemy.orm import Session
-
-from stargazer.crud.user import create_user
 from stargazer.helpers.github import GithubAPI
-from stargazer.main import app
-from stargazer.models.user import User
-from stargazer.scripts.create_super_user import create_super_user
-
-
-def test_create_user(db: Session):
-    user = {
-        "email": "test",
-        "password": "test",
-    }
-    create_user(db, user)
-    db.commit()
-
-    user = db.query(User).filter(User.email == "test").first()
-    assert user
-    assert user.verify_password("test")
-
-
-def test_create_super_user(db: Session):
-    create_super_user()
-    assert db.query(User).filter(User.email == "admin").first()
 
 
 class MockedResponse:
@@ -38,7 +12,11 @@ class MockedResponse:
         return self.result
 
 
-def test_get_neighbour_repositories(monkeypatch):
+def test_github_api_get_neighbour_repositories(monkeypatch):
+    """
+    Simulates multiple consecutive calls the the Github API
+    """
+
     def _response_values() -> Generator:
         yield MockedResponse(200, {"stargazers_url": "stargazers_url"})
         yield MockedResponse(

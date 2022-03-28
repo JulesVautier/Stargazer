@@ -1,11 +1,19 @@
-from pprint import pprint
+import os
 
 import requests
 from fastapi import HTTPException
 
 
 class GithubAPI:
-    def __init__(self, access_token):
+    """
+    Helper to interract with the Github API.
+    Requires a Github Token to work stored in ACCESS_TOKEN env variable.
+    You can generate one here: https://github.com/settings/tokens/new
+    """
+
+    def __init__(self, access_token: str = None):
+        if not access_token:
+            access_token = os.getenv("ACCESS_TOKEN")
         self.access_token = access_token
         if not self.access_token:
             raise HTTPException(status_code=500, detail="Github API Token not set.")

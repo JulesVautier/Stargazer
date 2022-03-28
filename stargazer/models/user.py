@@ -10,14 +10,14 @@ pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 class User(Base):
     __tablename__ = "users"
     id = Column(Integer, primary_key=True)
-    email = Column(String(120), unique=True)
+    username = Column(String(120), unique=True)
     _password = Column(String(120))
 
-    def __init__(self, email=None):
-        self.email = email
+    def __init__(self, username=None):
+        self.username = username
 
     def __repr__(self):
-        return "<User %r>" % (self.email)
+        return "<User %r>" % (self.username)
 
     @hybrid_property
     def password(self):
