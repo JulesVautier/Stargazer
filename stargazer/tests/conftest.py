@@ -1,20 +1,17 @@
-import os
 from typing import Generator
 
 import pytest
 from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker, Session
+from sqlalchemy.orm import sessionmaker
 from starlette.testclient import TestClient
 
+from stargazer.app import app
 from stargazer.db.database import Base, get_db
-from stargazer.main import app
 from stargazer.models.user import User
 
 SQLALCHEMY_DATABASE_URL = "sqlite:///./test.db"
 
-engine = create_engine(
-    SQLALCHEMY_DATABASE_URL, connect_args={"check_same_thread": False}
-)
+engine = create_engine(SQLALCHEMY_DATABASE_URL, connect_args={"check_same_thread": False})
 
 TestingSessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 

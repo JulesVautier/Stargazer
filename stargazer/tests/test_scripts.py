@@ -1,5 +1,5 @@
 from stargazer.models.user import User
-from stargazer.scripts.create_super_user import create_super_user
+from stargazer.scripts import create_super_user
 
 
 def test_create_super_user(mocked_function_db):

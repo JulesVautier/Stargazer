@@ -25,6 +25,7 @@ class GithubAPI:
             raise HTTPException(status_code=result.status_code, detail=result.json())
         return result.json()
 
+    # TODO Could use a schema to define the structure of the return value
     def get_neighbour_repositories(self, user: str, repo: str) -> dict:
         """
         Return neighbour repositories of a given repository.
@@ -57,10 +58,10 @@ class GithubAPI:
                     starred_repos[starred["name"]] = set()
                 starred_repos[starred["name"]].add(user["login"])
 
-        starred_repos = {
-            repo_name: starneighbors
-            for repo_name, starneighbors in starred_repos.items()
-            if len(starneighbors) > 1 and repo_name != repo
-        }
+        starred_repos = [
+            {"repo": repo_name, "stargazers": stargazers}
+            for repo_name, stargazers in starred_repos.items()
+            if len(stargazers) > 1 and repo_name != repo
+        ]
 
         return starred_repos

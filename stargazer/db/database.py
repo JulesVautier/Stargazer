@@ -14,14 +14,16 @@ POSTGRES_DB = os.environ.get("POSTGRES_DB", "stargazer")
 POSTGRES_PORT = os.environ.get("POSTGRES_PORT", 5432)
 POSTGRES_HOST = os.environ.get("POSTGRES_HOST", "localhost")
 
-SQLALCHEMY_DATABASE_URL = f"postgresql://{POSTGRES_USER}:{POSTGRES_PASSWORD}@{POSTGRES_HOST}:{POSTGRES_PORT}/{POSTGRES_DB}"
+SQLALCHEMY_DATABASE_URL = (
+    f"postgresql://{POSTGRES_USER}:{POSTGRES_PASSWORD}@{POSTGRES_HOST}:{POSTGRES_PORT}/{POSTGRES_DB}"
+)
 
 engine = create_engine(SQLALCHEMY_DATABASE_URL)
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
 Base = declarative_base()
 
-# Dependency
+
 def get_db():
     db = SessionLocal()
     try:
