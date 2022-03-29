@@ -22,21 +22,21 @@ def test_post_token_ko(client, populate_admin_user, username, password):
 
 
 def test_auth_fail(client):
-    response = client.get(
-        "/repos/user/repo/starneighbours", headers={"Authorization": "Bearer badtoken"}
-    )
+    response = client.get("/repos/user/repo/starneighbours", headers={"Authorization": "Bearer badtoken"})
     assert response.status_code == 401
 
 
 def test_get_starneighbours(monkeypatch, client):
     def mocker_fct(self, user, repo):
-        return {"repo": ["user"]}
+        return [
+            {"repo": "repoA", "stargazers": ["userA"]},
+            {"repo": "repoB", "stargazers": ["userB"]},
+        ]
 
-    monkeypatch.setattr(
-        "stargazer.helpers.github.GithubAPI.get_neighbour_repositories", mocker_fct
-    )
-    response = client.get(
-        "/repos/user/repo/starneighbours", headers={"Authorization": "Bearer admin"}
-    )
+    monkeypatch.setattr("stargazer.helpers.github.GithubAPI.get_neighbour_repositories", mocker_fct)
+    response = client.get("/repos/user/repo/starneighbours", headers={"Authorization": "Bearer admin"})
     assert response.status_code == 200
-    assert response.json() == {"repo": ["user"]}
+    assert response.json() == [
+        {"repo": "repoA", "stargazers": ["userA"]},
+        {"repo": "repoB", "stargazers": ["userB"]},
+    ]

@@ -44,4 +44,4 @@ def test_github_api_get_neighbour_repositories(monkeypatch):
 
     g = GithubAPI("fake_token")
     res = g.get_neighbour_repositories("test_username", "test_repo")
-    assert res == {"repo_test": {"user_2", "user_1"}}
+    assert res == [{"repo": "repo_test", "stargazers": ["user_1", "user_2"]}]

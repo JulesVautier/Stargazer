@@ -59,7 +59,7 @@ class GithubAPI:
                 starred_repos[starred["name"]].add(user["login"])
 
         starred_repos = [
-            {"repo": repo_name, "stargazers": stargazers}
+            {"repo": repo_name, "stargazers": list(stargazers)}
             for repo_name, stargazers in starred_repos.items()
             if len(stargazers) > 1 and repo_name != repo
         ]
