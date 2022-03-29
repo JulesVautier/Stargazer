@@ -41,9 +41,9 @@ pytest .
 ## Possible improvements (not ordered)
 
 * Use JWToken to encode/decode authentication tokens
-* Use schemas to validate/serialize data and have a strong typing in the code.
 * Split the GithubAPI.get_neighbour_repositories function in several little function like doing specific things like get_repo, get_user, get_starred_repos_from_user, in order to use them later in futures endpoints.
 * Use gunicorn to create multiple worker for the API in order to handle more requests simultaneously.
 * Use migrations with Alembic to manage database models
+* Populate the database with superuser using a script on container startup instead of doing it in application's startup
 * Use Github Oauth2 in order to authenticate users and use their own Github Token
 * Use Postgres database for tests too, instead of SQLite. (It was faster to setup)
